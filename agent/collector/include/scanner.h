@@ -4,6 +4,10 @@
 
 #include <stddef.h>
 
+#define DEFAULT_PAGE_SIZE 10000
+#define MAX_PAGE_SIZE 10000
+#define PAGE_BYTE_BUDGET (768 * 1024)
+
 typedef enum {
     FILE_TYPE,
     DIRECTORY_TYPE,
@@ -23,15 +27,22 @@ typedef struct {
 
     int partial;
     int error_code;
+    int has_more;
 } DirectoryResult;
 
-// Lire les entrées directes d'un répertoire
-DirectoryResult *list_directory(const char *path);
+typedef struct DirectorySession DirectorySession;
 
-// Libérer la mémoire
+DirectorySession *directory_session_open(const char *path);
+
+DirectoryResult *directory_session_next(
+    DirectorySession *session,
+    size_t limit
+);
+
+void directory_session_close(DirectorySession *session);
+
 void free_directory_result(DirectoryResult *result);
 
-// Sérialiser le résultat en JSON
 char *directory_result_to_json(const DirectoryResult *result);
 
 #endif

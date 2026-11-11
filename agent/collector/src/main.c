@@ -9,7 +9,7 @@ int main(void)
     printf("[FileWatch] Starting collector...\n");
 
     if (unix_server_start(SOCKET_PATH) == -1) {
-        fprintf(stderr, "[FileWatch] Server stopped\n");
+        fprintf(stderr, "[FileWatch] Collector stopped\n");
         return EXIT_FAILURE;
     }
 
