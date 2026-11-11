@@ -20,15 +20,18 @@ typedef struct {
     char *path;
     FileEntry *entries;
     size_t count;
+
+    int partial;
+    int error_code;
 } DirectoryResult;
 
 // Lire les entrées directes d'un répertoire
 DirectoryResult *list_directory(const char *path);
 
-// Libérer le résultat
+// Libérer la mémoire
 void free_directory_result(DirectoryResult *result);
 
-// Convertir le résultat en JSON
+// Sérialiser le résultat en JSON
 char *directory_result_to_json(const DirectoryResult *result);
 
 #endif
