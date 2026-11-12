@@ -1,0 +1,17 @@
+
+services:
+  filewatch-server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+
+    container_name: filewatch-server
+
+    ports:
+      - "50051:50051"
+
+    environment:
+      GRPC_HOST: "0.0.0.0"
+      GRPC_PORT: "50051"
+
+    restart: unless-stopped

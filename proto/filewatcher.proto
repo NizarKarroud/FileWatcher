@@ -1,0 +1,56 @@
+
+syntax = "proto3";
+
+package filewatch;
+
+service FileWatchService {
+    rpc AgentStream(stream AgentMessage)
+        returns (stream ServerMessage);
+}
+
+// Messages sent by the agent
+message AgentMessage {
+    string agent_id = 1;
+
+    oneof payload {
+        AgentHello hello = 2;
+        DirectoryResponse directory_response = 3;
+    }
+}
+
+// Messages sent by the server
+message ServerMessage {
+    oneof payload {
+        DirectoryRequest directory_request = 1;
+    }
+}
+
+message AgentHello {
+    string hostname = 1;
+}
+
+message DirectoryRequest {
+    string request_id = 1;
+    string path = 2;
+    uint32 limit = 3;
+    string cursor = 4;
+}
+
+message FileEntry {
+    string name = 1;
+    string type = 2;
+}
+
+message DirectoryResponse {
+    string request_id = 1;
+    string path = 2;
+
+    repeated FileEntry entries = 3;
+
+    bool has_more = 4;
+    string next_cursor = 5;
+
+    bool partial = 6;
+    int32 error_code = 7;
+    string error = 8;
+}
